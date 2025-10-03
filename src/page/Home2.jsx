@@ -9,7 +9,7 @@ const AdvertisementSection = () => {
       id: 1,
       title: "Back to School Sale",
       subtitle: "Up to 30% Off on MacBooks",
-      description: "Get ready for the academic year with powerful Apple technology",
+      description: "Gets ready for the academic year with powerful Apple technology",
       cta: "Shop Now",
       bgColor: "bg-gradient-to-r from-blue-600 to-purple-700",
       textColor: "text-white",
