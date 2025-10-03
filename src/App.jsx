@@ -3,8 +3,10 @@ import Navbar from './component/Navbar'
 import { Route,Routes } from 'react-router-dom'
 import Home from './page/Home'
 import About from './page/About'
-import Contect from './page/contect'
-import Floobit from './component/Floobit'
+import Footer from './component/Footer'
+import Product from './page/Product'
+import Contact from './page/Contact'
+
 
 
 
@@ -20,12 +22,13 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/about' element={<About/>}/>
-          <Route path='/contect' element={<Contect/>}/>
-      
+          <Route path='/product' element={<Product/>}/>
+       <Route path='/contact' element={<Contact/>}></Route>
+
         </Routes>
       </main>
       <footer>
-        <Floobit/>
+        <Footer />
       </footer>
     </div>
   )

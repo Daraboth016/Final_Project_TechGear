@@ -1,36 +1,150 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const location = useLocation();
+
+  const navItems = [
+    { path: '/', label: 'Home', icon: '🏠' },
+    { path: '/product', label: 'Products', icon: '🛒' },
+    { path: '/about', label: 'About', icon: 'ℹ️' },
+    { path: '/contact', label: 'Contact', icon: '📞' },
+  ];
+
+  const isActivePath = (path) => {
+    if (path === '/' && location.pathname === '/') return true;
+    if (path !== '/' && location.pathname.startsWith(path)) return true;
+    return false;
+  };
+
   return (
-    <div>
-        
+    <nav className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo Section */}
+          <div className="flex items-center space-x-3">
+            <Link 
+              to="/" 
+              className="flex items-center space-x-3 transition-transform hover:scale-105"
+            >
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">TG</span>
+              </div>
+              <div>
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  TechGear
+                </span>
+                <p className="text-xs text-gray-500 -mt-1">Premium Tech Store</p>
+              </div>
+            </Link>
+          </div>
 
-<nav class="bg-white border-gray-200 dark:bg-gray-900">
-  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-    <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
-        <img src="https://1000logos.net/wp-content/uploads/2016/10/Apple-Logo.png" class="h-8" alt="Flowbite Logo" />
-        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Apple</span>
-    </a>
-    <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
-        <span class="sr-only">Open main menu</span>
-        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-        </svg>
-    </button>
-    <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-      <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-        <Link to="/">Home</Link>
-        <Link to="/about">About</Link>
-        <Link to="/contect">Contect</Link>
- 
-      </ul>
-    </div>
-  </div>
-</nav>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-1">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`flex items-center space-x-1 px-4 py-2 rounded-lg transition-all duration-200 font-medium ${
+                  isActivePath(item.path)
+                    ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                }`}
+              >
+                <span className="text-sm">{item.icon}</span>
+                <span>{item.label}</span>
+              </Link>
+            ))}
+          </div>
 
-    </div>
-  )
-}
+          {/* Right Section - Search, Cart, Profile */}
+          
+        </div>
 
-export default Navbar
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden border-t border-gray-200 py-4 bg-white">
+            {/* Mobile Search */}
+            <div className="px-4 mb-4">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  🔍
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile Menu Items */}
+            <div className="space-y-1 px-2">
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`flex items-center space-x-3 px-3 py-3 rounded-lg transition-all duration-200 font-medium ${
+                    isActivePath(item.path)
+                      ? 'bg-blue-50 text-blue-600 border-r-4 border-blue-600'
+                      : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                  }`}
+                >
+                  <span className="text-lg">{item.icon}</span>
+                  <span>{item.label}</span>
+                </Link>
+              ))}
+            </div>
+
+            {/* Mobile User Menu */}
+            <div className="border-t border-gray-200 mt-4 pt-4 px-2">
+              <div className="space-y-1">
+                <Link
+                  to="/profile"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center space-x-3 px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <span>👤</span>
+                  <span>My Profile</span>
+                </Link>
+                <Link
+                  to="/orders"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center space-x-3 px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <span>📦</span>
+                  <span>My Orders</span>
+                </Link>
+                <button className="flex items-center space-x-3 px-3 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-colors w-full text-left">
+                  <span>🚪</span>
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Overlay for mobile menu */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+
+      {/* Overlay for profile dropdown */}
+      {isProfileOpen && (
+        <div
+          className="fixed inset-0 z-30"
+          onClick={() => setIsProfileOpen(false)}
+        />
+      )}
+    </nav>
+  );
+};
+
+export default Navbar;
